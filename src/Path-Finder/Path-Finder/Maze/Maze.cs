@@ -106,6 +106,17 @@ namespace Path_Finder.Maze
             return GetCountOfType(CellType.Open) + GetCountOfType(CellType.A) + GetCountOfType(CellType.B);
         }
 
+        public IEnumerator<Cell> GetEnumerator()
+        {
+            for (int i = 0; i < _maze.GetLength(0); i++)
+            {
+                for (int j = 0; j < _maze.GetLength(1); j++)
+                {
+                    yield return _maze[i,j];
+                }
+            }
+        }
+
         private void SetStartAndEnd()
         {
             _maze[0, 0] = new Cell

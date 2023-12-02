@@ -10,7 +10,7 @@ namespace Path_Finder.Algorithms
         public Coord[] Path { get; set; }
         public int PathCost { get; set; }
         public Node LastNode { get; set; }
-        public int DistanceOfCurrentNode { get; set; }
+        public double DistanceOfCurrentNode { get; set; }
         public int OpenListSize { get; set; }
         public int ClosedListSize { get; set; }
         public int UnexploredListSize { get; set; }

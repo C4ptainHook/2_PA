@@ -1,7 +1,6 @@
 ﻿
 namespace Path_Finder.Algorithms
 {
-    using Path_Finder.Maze.Grid;
     using Path_Finder.Maze;
     using System;
     using System.Collections.Generic;
@@ -10,7 +9,7 @@ namespace Path_Finder.Algorithms
 
     public abstract class AlgorithmBase
     {
-        protected readonly Grid Grid;
+        protected readonly Maze Maze;
         protected readonly List<Node> Closed;
         protected List<Coord> Path;
         protected readonly Coord Origin;
@@ -21,12 +20,12 @@ namespace Path_Finder.Algorithms
         public string AlgorithmName;
 
 
-        protected AlgorithmBase(Grid grid)
+        protected AlgorithmBase(Maze maze)
         {
-            Grid = grid;
+            Maze = maze;
             Closed = new List<Node>();
-            Origin = Grid.GetStart().Coord;
-            Destination = Grid.GetEnd().Coord;
+            Origin = Maze.GetStart().Coord;
+            Destination = Maze.GetEnd().Coord;
             Operations = 0;
             Id = 1;
         }
@@ -42,10 +41,10 @@ namespace Path_Finder.Algorithms
         {
             var neighbours = new List<Cell>
         {
-            Grid.GetCell(current.Coord.X - 1, current.Coord.Y),
-            Grid.GetCell(current.Coord.X + 1, current.Coord.Y),
-            Grid.GetCell(current.Coord.X, current.Coord.Y - 1),
-            Grid.GetCell(current.Coord.X, current.Coord.Y + 1)
+            Maze.GetCell(current.Coord.X - 1, current.Coord.Y),
+            Maze.GetCell(current.Coord.X + 1, current.Coord.Y),
+            Maze.GetCell(current.Coord.X, current.Coord.Y - 1),
+            Maze.GetCell(current.Coord.X, current.Coord.Y + 1)
         };
 
             return neighbours.Where(x => x.Type != Enums.CellType.Invalid && x.Type != Enums.CellType.Solid).Select(x => x.Coord).ToArray();
@@ -61,9 +60,9 @@ namespace Path_Finder.Algorithms
         /// <param name="origin"></param>
         /// <param name="destination"></param>
         /// <returns>Distance in blocks</returns>
-        protected static int GetManhattenDistance(Coord origin, Coord destination)
+        protected static double GetEuclidDistance(Coord origin, Coord destination)
         {
-            return Math.Abs(origin.X - destination.X) + Math.Abs(origin.Y - destination.Y);
+            return Math.Sqrt(Math.Pow(Math.Abs(origin.X - destination.X), 2) + Math.Pow(Math.Abs(origin.Y - destination.Y), 2));
         }
 
         /// <summary>
@@ -76,7 +75,7 @@ namespace Path_Finder.Algorithms
 
             var cost = 0;
             foreach (var step in Path)
-                cost += Grid.GetCell(step.X, step.Y).Weight;
+                cost += Maze.GetCell(step.X, step.Y).Weight;
 
             return cost;
         }

@@ -1,13 +1,6 @@
-﻿using Path_Finder.Maze.Grid;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Path_Finder.Algorithms
 {
-        using Path_Finder.Maze.Grid;
         using Path_Finder.Maze;
         using System.Collections.Generic;
         using System.Linq;
@@ -16,9 +9,9 @@ namespace Path_Finder.Algorithms
         {
             readonly Stack<Node> _stack = new Stack<Node>();
 
-            public LDFS(Grid grid) : base(grid)
+            public LDFS(Maze maze) : base(maze)
             {
-                AlgorithmName = "DFS";
+                AlgorithmName = "LDFS";
 
                 // Add the first node to the stack
                 _stack.Push(new Node(Id++, null, Origin, 0, 0));
@@ -45,19 +38,19 @@ namespace Path_Finder.Algorithms
                 if (neighbours.Any())
                 {
                     foreach (var neighbour in neighbours)
-                        Grid.SetCell(neighbour.X, neighbour.Y, Enums.CellType.Open);
+                        Maze.SetCell(neighbour.X, neighbour.Y, Enums.CellType.Open);
 
                     // Take this neighbour and add it the stack
                     var next = neighbours.First();
                     var newNode = new Node(Id++, null, next.X, next.Y, 0, 0);
                     _stack.Push(newNode);
-                    Grid.SetCell(newNode.Coord.X, newNode.Coord.Y, Enums.CellType.Current);
+                    Maze.SetCell(newNode.Coord.X, newNode.Coord.Y, Enums.CellType.Current);
                 }
                 else
                 {
                     // Remove this unused node from the stack and add it to the closed list
                     var abandonedCell = _stack.Pop();
-                    Grid.SetCell(abandonedCell.Coord.X, abandonedCell.Coord.Y, Enums.CellType.Closed);
+                    Maze.SetCell(abandonedCell.Coord.X, abandonedCell.Coord.Y, Enums.CellType.Closed);
                     Closed.Add(abandonedCell);
                 }
 
@@ -76,10 +69,10 @@ namespace Path_Finder.Algorithms
                     Path = Path?.ToArray(),
                     PathCost = GetPathCost(),
                     LastNode = CurrentNode,
-                    DistanceOfCurrentNode = CurrentNode == null ? 0 : GetManhattenDistance(CurrentNode.Coord, Destination),
+                    DistanceOfCurrentNode = CurrentNode == null ? 0 : GetEuclidDistance(CurrentNode.Coord, Destination),
                     OpenListSize = _stack.Count,
                     ClosedListSize = Closed.Count,
-                    UnexploredListSize = Grid.GetCountOfType(Enums.CellType.Empty),
+                    UnexploredListSize = Maze.GetCountOfType(Enums.CellType.Empty),
                     Operations = Operations++
                 };
             }
