@@ -1,7 +1,7 @@
 ﻿
 namespace Path_Finder.Algorithms
 {
-        using Path_Finder.Maze;
+        using Path_Finder.MazeDomain;
         using System.Collections.Generic;
         using System.Linq;
 
