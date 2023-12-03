@@ -4,19 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Path_Finder.Maze
+namespace Path_Finder.MazeDomain
 {
     using static Enums;
 
     public class Maze
     {
         private readonly Cell[,] _maze;
+        public int Rows {get; private set;}
+        public int Columns {get; private set; }
         public Maze(int horizontalCells, int verticalCells)
         {
             _maze = new Cell[horizontalCells, verticalCells];
-            for (var x = 0; x < _maze.GetLength(0); x++)
+            Rows = horizontalCells;
+            Columns = verticalCells;
+            for (var x = 0; x < Rows; x++)
             {
-                for (var y = 0; y < _maze.GetLength(1); y++)
+                for (var y = 0; y < Columns; y++)
                 {
                     SetCell(x, y, CellType.Empty);
                 }
@@ -35,9 +39,9 @@ namespace Path_Finder.Maze
             var rand = new Random(seed);
 
             // Iterate through the whole grid
-            for (var x = 0; x < _maze.GetLength(0); x++)
+            for (var x = 0; x < Rows; x++)
             {
-                for (var y = 0; y < _maze.GetLength(1); y++)
+                for (var y = 0; y < Columns; y++)
                 {
                     // Make each cell either solid or empty at random
                     _maze[x, y].Type = rand.Next(0, 10) > 5 ? CellType.Solid : CellType.Empty;
@@ -81,8 +85,6 @@ namespace Path_Finder.Maze
                 Type = type,
                 Weight = GetCell(x, y)?.Weight ?? 0
             };
-
-            SetStartAndEnd();
         }
 
         public void SetCell(Coord coord, CellType type)
@@ -104,6 +106,17 @@ namespace Path_Finder.Maze
         public int GetTraversableCells()
         {
             return GetCountOfType(CellType.Open) + GetCountOfType(CellType.A) + GetCountOfType(CellType.B);
+        }
+
+        public IEnumerator<Cell> GetEnumerator()
+        {
+            for (int i = 0; i < _maze.GetLength(0); i++)
+            {
+                for (int j = 0; j < _maze.GetLength(1); j++)
+                {
+                    yield return _maze[i,j];
+                }
+            }
         }
 
         private void SetStartAndEnd()

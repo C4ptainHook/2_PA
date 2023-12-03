@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Path_Finder.Maze
+namespace Path_Finder.MazeDomain
 {
     public class Enums
     {
