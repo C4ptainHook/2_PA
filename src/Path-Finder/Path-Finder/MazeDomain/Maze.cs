@@ -25,8 +25,6 @@ namespace Path_Finder.MazeDomain
                     SetCell(x, y, CellType.Empty);
                 }
             }
-
-            SetStartAndEnd();
         }
 
         public void Randomize()
@@ -57,7 +55,6 @@ namespace Path_Finder.MazeDomain
                         _maze[x, y].Weight = 1;
                 }
             }
-            SetStartAndEnd();
         }
 
         public Cell GetCell(int x, int y)

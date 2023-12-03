@@ -2,7 +2,6 @@
 namespace Path_Finder
 {
     using System;
-    using System.Linq;
     using Path_Finder.Algorithms;
     using Path_Finder.MazeDomain;
     using static System.Net.Mime.MediaTypeNames;
@@ -15,10 +14,14 @@ namespace Path_Finder
         private const int Delay = 5;
 
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
-            var maze = MazeDialog.LoadMaze();
-            MazeDialog.SaveMaze(maze);
+            foreach(string arg in args)
+            {
+                Console.WriteLine(arg);
+            }
+            //var maze = MazeDialog.LoadMaze();
+            //MazeDialog.SaveMaze(maze);
         }
 
         /// <summary>
@@ -31,7 +34,7 @@ namespace Path_Finder
             // Generate mazes until one if made that has a valid path between A and B
             //var workingSeed = 0;
             //while (workingSeed == 0)
-                //workingSeed = FindWorkingSeed();
+            //    workingSeed = FindWorkingSeed();
         }
 
         /// <summary>
@@ -40,7 +43,8 @@ namespace Path_Finder
         /// <returns>The seed of the valid maze</returns>
         //private int FindWorkingSeed()
         //{
-        //    var testPathFinder = new DFS(testMazeDrawer.Grid);
+        //    var randomMaze = new Maze();
+        //    var testPathFinder = new LDFS(testMazeDrawer.Grid);
         //    var progress = testPathFinder.GetPathTick();
         //    while (progress.PathPossible && !progress.PathFound)
         //    {
