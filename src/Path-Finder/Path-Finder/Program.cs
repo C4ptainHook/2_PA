@@ -16,34 +16,36 @@ namespace Path_Finder
         [STAThread]
         public static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<CLOptions>(args)
-                .WithParsed<CLOptions>((options) => 
-                {
-                    try
-                    {
-                        ValidateOptions(options);
-                    }
-                    catch(ArgumentNullException NullEx) 
-                    { Console.WriteLine(NullEx.Message); }
-                    catch(ArgumentOutOfRangeException outOfRangeEx)
-                    { Console.WriteLine(outOfRangeEx.Message); }
+            var Maze = MazeDialog.LoadMaze();
+            MazeDialog.SaveMaze(Maze);
+            //Parser.Default.ParseArguments<CLOptions>(args)
+            //    .WithParsed<CLOptions>((options) => 
+            //    {
+            //        try
+            //        {
+            //            ValidateOptions(options);
+            //        }
+            //        catch(ArgumentNullException NullEx) 
+            //        { Console.WriteLine(NullEx.Message); }
+            //        catch(ArgumentOutOfRangeException outOfRangeEx)
+            //        { Console.WriteLine(outOfRangeEx.Message); }
 
-                    Maze mazeForSolving;
+            //        Maze mazeForSolving;
 
-                    if (options.MSize != 0)
-                    {
-                        mazeForSolving = MazeGenerator.InitialiseMaze(options.MSize);
-                    }
-                    else
-                    {
-                        mazeForSolving = MazeDialog.LoadMaze(); 
-                    }
+            //        if (options.MSize != 0)
+            //        {
+            //            mazeForSolving = MazeGenerator.InitialiseMaze(options.MSize);
+            //        }
+            //        else
+            //        {
+            //            mazeForSolving = MazeDialog.LoadMaze(); 
+            //        }
 
-                    while (options.LDFS || options.RBFS) 
-                    {
+            //        while (options.LDFS || options.RBFS) 
+            //        {
                             
-                    }
-                });
+            //        }
+            //    });
         }
 
 
