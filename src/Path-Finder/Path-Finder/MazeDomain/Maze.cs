@@ -55,6 +55,7 @@ namespace Path_Finder.MazeDomain
                         _maze[x, y].Weight = 1;
                 }
             }
+            SetStartAndEnd();
         }
 
         public Cell GetCell(int x, int y)

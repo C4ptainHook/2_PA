@@ -2,56 +2,62 @@
 namespace Path_Finder
 {
     using System;
+    using System.Drawing.Printing;
+    using CommandLine;
     using Path_Finder.Algorithms;
+    using Path_Finder.ArgsSettings;
     using Path_Finder.MazeDomain;
     using static System.Net.Mime.MediaTypeNames;
 
     public partial class Program
     {
-        private AlgorithmBase[] _algorithms;
-        private int _currentAlgorithm;
         private readonly System.Timers.Timer _pathTimer;
-        private const int Delay = 5;
 
         [STAThread]
         public static void Main(string[] args)
         {
-            foreach(string arg in args)
-            {
-                Console.WriteLine(arg);
-            }
-            //var maze = MazeDialog.LoadMaze();
-            //MazeDialog.SaveMaze(maze);
+            Parser.Default.ParseArguments<CLOptions>(args)
+                .WithParsed<CLOptions>((options) => 
+                {
+                    try
+                    {
+                        ValidateOptions(options);
+                    }
+                    catch(ArgumentNullException NullEx) 
+                    { Console.WriteLine(NullEx.Message); }
+                    catch(ArgumentOutOfRangeException outOfRangeEx)
+                    { Console.WriteLine(outOfRangeEx.Message); }
+
+                    Maze mazeForSolving;
+
+                    if (options.MSize != 0)
+                    {
+                        mazeForSolving = MazeGenerator.InitialiseMaze(options.MSize);
+                    }
+                    else
+                    {
+                        mazeForSolving = MazeDialog.LoadMaze(); 
+                    }
+
+                    while (options.LDFS || options.RBFS) 
+                    {
+                            
+                    }
+                });
         }
 
-        /// <summary>
-        /// Set up a maze and initialise the algorithm variables
-        /// </summary>
-        private void InitialiseMaze()
+
+        private static void ValidateOptions(CLOptions options)
         {
-            _pathTimer.Stop();
+            if (options.LDFS && options.LDFSDepth == 0)
+            {
+                throw new ArgumentNullException("Depth parameter for LDFS wasnt specified");
+            }
 
-            // Generate mazes until one if made that has a valid path between A and B
-            //var workingSeed = 0;
-            //while (workingSeed == 0)
-            //    workingSeed = FindWorkingSeed();
+            if (options.MSize < 0 || options.MSize > options.MaxMazeSize)
+            {
+                throw new ArgumentOutOfRangeException($"Maze size has size out of range.\n[Current size:{options.MSize} - 0 < Allowed size < {options.MaxMazeSize}");
+            }
         }
-
-        /// <summary>
-        /// Generate mazes until one is found that has a valid path between A and B
-        /// </summary>
-        /// <returns>The seed of the valid maze</returns>
-        //private int FindWorkingSeed()
-        //{
-        //    var randomMaze = new Maze();
-        //    var testPathFinder = new LDFS(testMazeDrawer.Grid);
-        //    var progress = testPathFinder.GetPathTick();
-        //    while (progress.PathPossible && !progress.PathFound)
-        //    {
-        //        progress = testPathFinder.GetPathTick();
-        //    }
-
-        //    return progress.PathFound ? testMazeDrawer.Seed : 0;
-        //}
     }
 }
