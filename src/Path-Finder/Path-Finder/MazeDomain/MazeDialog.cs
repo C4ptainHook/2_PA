@@ -57,6 +57,8 @@ namespace Path_Finder.MazeDomain
                         {
                             case(CellType.Empty): { writer.Write(0); break; }
                             case(CellType.Solid): { writer.Write(1); break; }
+                            case (CellType.A): { writer.Write('A'); break; }
+                            case (CellType.B): { writer.Write('B'); break; }
                             default: { writer.Write(0); break; }
                         }
                         flow++;
@@ -104,29 +106,28 @@ namespace Path_Finder.MazeDomain
         }
         private static SemiAction TranslateMaze(Maze maze)
         {
-            int i = 0;
+            var i = 0;
 
            return (string[] sequence) =>
             {
-                for (int j = 0; j < sequence.Length; j++)
+                for (var j = 0; j < sequence.Length; j++)
                 {
-                    int.TryParse(sequence[j], out int number);
-                    switch (number)
+                    if (sequence[j] == "0")
                     {
-                        case (0):
-                            {
-                                maze.SetCell(i,j, CellType.Empty); break;
-                            }
-                        case (1):
-                            {
-                                maze.SetCell(i, j, CellType.Solid); break;
-                            }
-                        default:
-                            {
-                                throw new Exception("Wrong value in maze set");
-                            }
+                        maze.SetCell(i, j, CellType.Empty);
                     }
-                 
+                    else if (sequence[j] == "1")
+                    {
+                        maze.SetCell(i, j, CellType.Solid);
+                    }
+                    else if (sequence[j] == "A")
+                    {
+                        maze.SetCell(i, j, CellType.A);
+                    }
+                    else if (sequence[j] == "B")
+                    {
+                        maze.SetCell(i, j, CellType.B);
+                    }
                 }
                 i++;
             };

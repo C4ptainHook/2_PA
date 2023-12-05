@@ -32,6 +32,13 @@ namespace Path_Finder.Algorithms
 
         public abstract SearchDetails GetPathTick();
 
+        public void SetStartAndEnd(Coord start, Coord end) 
+        {
+            Maze.SetCell(start, Enums.CellType.A);
+            Maze.SetCell(end, Enums.CellType.B);
+        }
+
+
         /// <summary>
         /// Find the coords that are above, below, left, and right of the current cell, assuming they are valid
         /// </summary>

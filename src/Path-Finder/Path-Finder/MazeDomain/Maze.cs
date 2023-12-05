@@ -25,8 +25,6 @@ namespace Path_Finder.MazeDomain
                     SetCell(x, y, CellType.Empty);
                 }
             }
-
-            SetStartAndEnd();
         }
 
         public void Randomize()
