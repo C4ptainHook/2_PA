@@ -8,11 +8,11 @@ namespace Path_Finder.Algorithms
         public class LDFS : AlgorithmBase
         {
             readonly Stack<Node> _stack = new Stack<Node>();
-
-            public LDFS(Maze maze) : base(maze)
+            public uint dLim { get; private set; }
+            public LDFS(Maze maze, uint depthLimit) : base(maze)
             {
                 AlgorithmName = "LDFS";
-
+                dLim = depthLimit;
                 // Add the first node to the stack
                 _stack.Push(new Node(Id++, null, Origin, 0, 0));
             }
@@ -35,7 +35,7 @@ namespace Path_Finder.Algorithms
 
                 // Get all the neighbours that haven't been visited
                 var neighbours = GetNeighbours(CurrentNode).Where(x => !AlreadyVisited(new Coord(x.X, x.Y))).ToArray();
-                if (neighbours.Any())
+                if (neighbours.Any() && dLim > 0)
                 {
                     foreach (var neighbour in neighbours)
                         Maze.SetCell(neighbour.X, neighbour.Y, Enums.CellType.Open);
@@ -44,6 +44,7 @@ namespace Path_Finder.Algorithms
                     var next = neighbours.First();
                     var newNode = new Node(Id++, null, next.X, next.Y, 0, 0);
                     _stack.Push(newNode);
+                    dLim--;
                     Maze.SetCell(newNode.Coord.X, newNode.Coord.Y, Enums.CellType.Current);
                 }
                 else

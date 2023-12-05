@@ -14,7 +14,7 @@
         public bool LDFS { get; set; } = false;
 
         [Option('d', "depth", Required = false, HelpText = "Limits depth of recursion to the provided value")]
-        public int LDFSDepth { get; set; } = 0;
+        public uint LDFSDepth { get; set; } = 0;
 
         [Option("RBFS", Required = false, HelpText = "Utilize RBFS algorithm to solve the problem")]
         public bool RBFS { get; set; } = false;
