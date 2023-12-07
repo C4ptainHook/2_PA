@@ -15,5 +15,6 @@ namespace Path_Finder.Algorithms
         public int ClosedListSize { get; set; }
         public int UnexploredListSize { get; set; }
         public int Operations { get; set; }
+        public double FLimit { get; set; }
     }
 }

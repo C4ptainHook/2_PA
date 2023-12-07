@@ -4,7 +4,7 @@ namespace Path_Finder.Algorithms
     using Path_Finder.MazeDomain;
     public class Node
     {
-        public Node(int id, int? parentId, int x, int y, int g, int h)
+        public Node(int id, int? parentId, int x, int y, double g, double h)
         {
             Id = id;
             ParentId = parentId;
@@ -14,7 +14,7 @@ namespace Path_Finder.Algorithms
             F = G + H;
         }
 
-        public Node(int id, int? parentId, Coord coord, int g, int h)
+        public Node(int id, int? parentId, Coord coord, double g, double h)
         {
             Id = id;
             ParentId = parentId;
@@ -27,8 +27,8 @@ namespace Path_Finder.Algorithms
         public int Id { get; set; }
         public int? ParentId { get; set; }
         public Coord Coord { get; set; }
-        public int F { get; set; }
-        public int G { get; set; }
-        public int H { get; set; }
+        public double F { get; set; }
+        public double G { get; set; }
+        public double H { get; set; }
     }
 }
