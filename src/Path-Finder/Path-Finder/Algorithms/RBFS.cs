@@ -7,7 +7,6 @@ namespace Path_Finder.Algorithms
     {
 
         readonly Stack<Node> _stack = new Stack<Node>();
-        public uint fLim { get; private set; }
 
         public RBFS(Maze maze): base(maze)
         {
@@ -25,8 +24,9 @@ namespace Path_Finder.Algorithms
         }
         public override SearchDetails GetPathTick()
         {
-            return RBFSSearch(_stack.Peek(), int.MaxValue);
-        }   public Tuple<Node,Node> GetBestAndAlternative(Coord[] succesors)
+            return RBFSSearch(double.MaxValue);
+        } 
+        public Tuple<Node,Node> GetBestAndAlternative(Coord[] succesors)
         {
             var nodifiedNeigbors = new List<Node>();
             Tuple<Node,Node> firstAndSecond;
@@ -44,23 +44,29 @@ namespace Path_Finder.Algorithms
             return firstAndSecond;
         }
      
-        public SearchDetails RBFSSearch(Node node, double fLimit)
+        public SearchDetails RBFSSearch(double FLimit)
         {
-            SearchDetails ans = new SearchDetails();
+            SearchDetails answer;
             CurrentNode = _stack.Peek();
+            Console.WriteLine($"Current node{CurrentNode.Coord}");//debug
             if (CoordsMatch(CurrentNode.Coord, Destination))
             {
                 // All the items on the stack will be the path so add them and reverse the order
                 Path = new List<Coord>();
                 foreach (var item in _stack)
                     Path.Add(item.Coord);
-
                 Path.Reverse();
-
-                return GetSearchDetails();
+                answer = GetSearchDetails();
+                answer.FLimit = 0;
+                return answer;
             }
 
             var _neighbours = GetNeighbours(CurrentNode).Where(x => !AlreadyVisited(new Coord(x.X, x.Y))).ToArray();
+
+            for(var i = 0; i<_neighbours.Length; i++ )
+            {
+                Console.WriteLine($"Neigbor {i} = {_neighbours[i]}"); //debug
+            }
 
             if (_neighbours.Any())
             {
@@ -71,9 +77,17 @@ namespace Path_Finder.Algorithms
                     var bATuple = GetBestAndAlternative(_neighbours);
                     best = bATuple.Item1;
                     alternative = bATuple.Item2.F;
-                    if (bATuple.Item1.F > fLimit) { _stack.Pop(); ans.FLimit = best.F; ans.Path = null; return ans;}
+                    Console.WriteLine($"Best = {best}");//debug
+                    if (bATuple.Item1.F > FLimit) 
+                    {
+                        _stack.Pop();
+                        answer = GetSearchDetails();
+                        answer.FLimit = best.F; 
+                        return answer;
+                    }
                     _stack.Push(best);
-                    SearchDetails result = RBFSSearch(best, Math.Min(fLimit, alternative));
+                    Console.WriteLine($"Best = {best} додано у стек");//debug
+                    SearchDetails result = RBFSSearch(Math.Min(FLimit, alternative));
                     best.F = result.FLimit;
                     if (result.Path != null) return result;
                 }
@@ -81,9 +95,11 @@ namespace Path_Finder.Algorithms
             else
             {
                 // Remove this unused node from the stack
+                Console.WriteLine($"{_stack.Peek()} видалено зі стеку");//debug
                 _stack.Pop();
-                ans.FLimit = double.MaxValue; ans.Path = null;
-                return ans;
+                answer = GetSearchDetails();
+                answer.FLimit = double.MaxValue; 
+                return answer;
             }
         }
         protected override SearchDetails GetSearchDetails()
