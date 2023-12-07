@@ -18,7 +18,7 @@ namespace Path_Finder.MazeDomain
         }
         public override string ToString()
         {
-            return $"({X},{Y})";
+            return $"({X+1},{Y+1})";
         }
     }
 }
