@@ -1,5 +1,7 @@
 ﻿
 using Path_Finder.MazeDomain;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace Path_Finder.Algorithms
 {
@@ -53,13 +55,13 @@ namespace Path_Finder.Algorithms
         {
             SearchDetails answer;
             CurrentNode = _stack.Peek();
-            Console.WriteLine($"Current node{CurrentNode.Coord}");//debug
+            //Console.WriteLine($"Current node{CurrentNode.Coord}");//debug
             if (CoordsMatch(CurrentNode.Coord, Destination))
             {
-                for (int j = 0; j < 1; j++)
-                {
-                    Console.WriteLine($"SOLUTION FOUND"); //debug
-                }
+                //for (int j = 0; j < 1; j++)
+                //{
+                //    Console.WriteLine($"SOLUTION FOUND"); //debug
+                //}
                 // All the items on the stack will be the path so add them and reverse the order
                 Path = new List<Coord>();
                 foreach (var item in _stack)
@@ -74,7 +76,7 @@ namespace Path_Finder.Algorithms
             
             for(var i = 0; i < _neighbours.Count; i++ )
             {
-                Console.WriteLine($"Neigbor {i} = {_neighbours[i]}"); //debug
+                //Console.WriteLine($"Neigbor {i} = {_neighbours[i]}"); //debug
             }
 
             if (_neighbours.Any())
@@ -86,19 +88,19 @@ namespace Path_Finder.Algorithms
                     var bATuple = GetBestAndAlternative(_neighbours);
                     best = bATuple.Item1;
                     alternative = bATuple.Item2.F;
-                    Console.WriteLine($"Best = {best.Coord} F = {best.F}");//debug
-                    Console.WriteLine($"Flimit = {FLimit}");//debug
+                    //Console.WriteLine($"Best = {best.Coord} F = {best.F}");//debug
+                    //Console.WriteLine($"Flimit = {FLimit}");//debug
                     if (bATuple.Item1.F >= double.MaxValue 
                         || bATuple.Item1.F > FLimit) 
                     {
-                        Console.WriteLine($"{_stack.Peek().Coord} видалено зі стеку");//debug
+                        //Console.WriteLine($"{_stack.Peek().Coord} видалено зі стеку");//debug
                         _stack.Pop();
                         answer = GetSearchDetails();
                         answer.FLimit = best.F; 
                         return answer;
                     }
                     _stack.Push(best);
-                    Console.WriteLine($"Best = {best.Coord} додано у стек");//debug
+                    //Console.WriteLine($"Best = {best.Coord} додано у стек");//debug
                     SearchDetails result = RBFSSearch(Math.Min(FLimit, alternative));
                     best.F = result.FLimit;
                     if (result.Path != null) return result;
@@ -107,7 +109,7 @@ namespace Path_Finder.Algorithms
             else
             {
                 // Remove this unused node from the stack
-                Console.WriteLine($"{_stack.Peek().Coord} видалено зі стеку");//debug
+                //Console.WriteLine($"{_stack.Peek().Coord} видалено зі стеку");//debug
                 _stack.Pop();
                 answer = GetSearchDetails();
                 answer.FLimit = double.MaxValue; 

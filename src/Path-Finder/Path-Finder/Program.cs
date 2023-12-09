@@ -3,7 +3,6 @@ namespace Path_Finder
 {
     using System;
     using System.Diagnostics;
-    using System.Drawing.Printing;
     using CommandLine;
     using Path_Finder.Algorithms;
     using Path_Finder.ArgsSettings;
@@ -18,37 +17,25 @@ namespace Path_Finder
             Parser.Default.ParseArguments<CLOptions>(args)
                 .WithParsed<CLOptions>((options) =>
                 {
-                    //options.LDFS = true;
-                    //options.LDFSDepth = 100; //debug
-
-                    options.RBFS = true;//debug
-
                     try
                     {
                         ValidateOptions(options);
                     }
                     catch (ArgumentNullException NullEx)
                     { Console.WriteLine(NullEx.Message); }
-                    catch (ArgumentOutOfRangeException outOfRangeEx)
-                    { Console.WriteLine(outOfRangeEx.Message); }
 
                     Maze mazeForSolving;
                     SearchDetails progress;
 
-                    if (options.MSize != 0)
-                    {
-                        mazeForSolving = MazeGenerator.InitialiseMaze(options.MSize);
-                    }
-                    else
-                    {
-                        mazeForSolving = MazeDialog.LoadMaze();
-                    }
-
                     while (options.LDFS || options.RBFS)
                     {
-                        if (options.LDFS)
+                        if (options.LDFS && options.LDFSDepth != 0)
                         {
+                            _stopwatch.Reset();
+                            _stopwatch.Start();
+                            mazeForSolving = MazeDialog.LoadMaze();
                             var ldfs = new LDFS(mazeForSolving, options.LDFSDepth);
+                            Console.WriteLine($"Algorithm: {ldfs.AlgorithmName}");
                             progress = ldfs.GetPathTick();
                             while (progress.PathPossible && !progress.PathFound)
                             {
@@ -56,23 +43,26 @@ namespace Path_Finder
                             }
                             options.LDFS = false;
                         }
-                        else
+                        else 
                         {
+                            mazeForSolving = MazeDialog.LoadMaze();
                             _stopwatch.Reset();
                             _stopwatch.Start();
                             var rbfs = new RBFS(mazeForSolving);
+                            Console.WriteLine($"Algorithm: {rbfs.AlgorithmName}");
                             progress = rbfs.GetPathTick();
                             options.RBFS = false;
-                            Console.WriteLine($"Elapsed time {_stopwatch.Elapsed.TotalSeconds}");
                         }
 
                         if (progress.Path != null)
                         {
-                            Console.WriteLine("Solution was found\nPath:[");
+                            Console.Write("Solution was found\nPath:[");
                             foreach (var coord in progress.Path)
                             {
-                                Console.Write(coord.ToString() + ",");
+                                Console.Write(coord.ToString() + ' ');
                             }
+                            Console.WriteLine(']');
+                            Console.WriteLine($"Elapsed time: {_stopwatch.Elapsed.TotalSeconds} seconds" + '\n');
                         }
                         else
                         {
@@ -89,12 +79,6 @@ namespace Path_Finder
             {
                 throw new ArgumentNullException("Depth parameter for LDFS wasnt specified");
             }
-
-            if (options.MSize < 0 || options.MSize > options.MaxMazeSize)
-            {
-                throw new ArgumentOutOfRangeException($"Maze size has size out of range.\n[Current size:{options.MSize} - 0 < Allowed size < {options.MaxMazeSize}");
-            }
-
             if (!options.LDFS && !options.RBFS)
             {
                 throw new ArgumentNullException("Oops...At least one algorithm has to be used");

@@ -1,13 +1,8 @@
 ﻿
-using Microsoft.VisualBasic.Logging;
-using System.Drawing.Printing;
-using System.IO.Packaging;
-using System.Windows.Forms;
-using static Path_Finder.MazeDomain.Enums;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace Path_Finder.MazeDomain
 {
+    using static Path_Finder.MazeDomain.Enums;
     public static class MazeDialog
     {
         private delegate void SemiAction(string[] seq);
