@@ -31,6 +31,9 @@
     <None Update="Assets\LDFSTestMaze.maze">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\RBFSTestMaze.maze">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
