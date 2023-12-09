@@ -8,7 +8,6 @@ namespace Path_Finder
     using Path_Finder.Algorithms;
     using Path_Finder.ArgsSettings;
     using Path_Finder.MazeDomain;
-    using static System.Net.Mime.MediaTypeNames;
 
     public partial class Program
     {
@@ -20,8 +19,10 @@ namespace Path_Finder
             Parser.Default.ParseArguments<CLOptions>(args)
                 .WithParsed<CLOptions>((options) =>
                 {
-                    options.LDFS = true;
-                    options.LDFSDepth = 100; //debug
+                    //options.LDFS = true;
+                    //options.LDFSDepth = 100; //debug
+
+                    options.RBFS = true;//debug
 
                     try
                     {
@@ -58,15 +59,24 @@ namespace Path_Finder
                         }
                         else
                         {
-                            throw new NotImplementedException("RBFS not implemented yet");
+                            var rbfs = new RBFS(mazeForSolving);
+                            progress = rbfs.GetPathTick();
+                            options.RBFS = false;
                         }
 
                         if (progress is not null)
                         {
-                            Console.WriteLine("Solution was found\nPath:[");
-                            foreach(var coord in progress.Path)
+                            if (progress.Path != null)
                             {
-                                Console.Write(coord.ToString()+",");
+                                Console.WriteLine("Solution was found\nPath:[");
+                                foreach (var coord in progress.Path)
+                                {
+                                    Console.Write(coord.ToString() + ",");
+                                }
+                            }
+                            else
+                            {
+                                throw new ArgumentNullException("Solution was found, but path is null");
                             }
                         }
                         else
