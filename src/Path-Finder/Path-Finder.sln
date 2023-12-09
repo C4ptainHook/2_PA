@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Path-Finder", "Path-Finder\Path-Finder.csproj", "{477324AA-6CFE-4A41-A6EA-B647ABACDC98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Path-Finder", "Path-Finder\Path-Finder.csproj", "{477324AA-6CFE-4A41-A6EA-B647ABACDC98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Path_Finder.Tests", "..\Path_Finder.Tests\Path_Finder.Tests.csproj", "{F7506454-25B6-4C17-A2CB-F584B7BB2F49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{477324AA-6CFE-4A41-A6EA-B647ABACDC98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{477324AA-6CFE-4A41-A6EA-B647ABACDC98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{477324AA-6CFE-4A41-A6EA-B647ABACDC98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7506454-25B6-4C17-A2CB-F584B7BB2F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7506454-25B6-4C17-A2CB-F584B7BB2F49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7506454-25B6-4C17-A2CB-F584B7BB2F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7506454-25B6-4C17-A2CB-F584B7BB2F49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@ using Path_Finder.MazeDomain;
 
 namespace Path_Finder.Algorithms
 {
-    class RBFS: AlgorithmBase
+    public class RBFS: AlgorithmBase
     {
 
         readonly Stack<Node> _stack = new Stack<Node>();
@@ -56,21 +56,22 @@ namespace Path_Finder.Algorithms
             Console.WriteLine($"Current node{CurrentNode.Coord}");//debug
             if (CoordsMatch(CurrentNode.Coord, Destination))
             {
-                Console.WriteLine($"SOLUTION FOUND"); //debug
+                for (int j = 0; j < 1; j++)
+                {
+                    Console.WriteLine($"SOLUTION FOUND"); //debug
+                }
                 // All the items on the stack will be the path so add them and reverse the order
                 Path = new List<Coord>();
                 foreach (var item in _stack)
                     Path.Add(item.Coord);
                 Path.Reverse();
                 answer = GetSearchDetails();
-                answer.FLimit = 0;
+                answer.FLimit = -1;
                 return answer;
             }
 
-
             var _neighbours = NodifyNeigbors(GetNeighbours(CurrentNode).Where(x => !AlreadyVisited(new Coord(x.X, x.Y))).ToArray());
             
-
             for(var i = 0; i < _neighbours.Count; i++ )
             {
                 Console.WriteLine($"Neigbor {i} = {_neighbours[i]}"); //debug
@@ -85,12 +86,13 @@ namespace Path_Finder.Algorithms
                     var bATuple = GetBestAndAlternative(_neighbours);
                     best = bATuple.Item1;
                     alternative = bATuple.Item2.F;
-                    Console.WriteLine($"Best = {best.Coord}");//debug
-                    if (bATuple.Item1.F > FLimit) 
+                    Console.WriteLine($"Best = {best.Coord} F = {best.F}");//debug
+                    Console.WriteLine($"Flimit = {FLimit}");//debug
+                    if (bATuple.Item1.F >= double.MaxValue 
+                        || bATuple.Item1.F > FLimit) 
                     {
                         Console.WriteLine($"{_stack.Peek().Coord} видалено зі стеку");//debug
                         _stack.Pop();
-                        CurrentNode = _stack.Peek();
                         answer = GetSearchDetails();
                         answer.FLimit = best.F; 
                         return answer;
