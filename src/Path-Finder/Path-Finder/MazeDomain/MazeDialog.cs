@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.VisualBasic.Logging;
+using System.Drawing.Printing;
 using System.IO.Packaging;
 using System.Windows.Forms;
 using static Path_Finder.MazeDomain.Enums;
@@ -70,11 +71,22 @@ namespace Path_Finder.MazeDomain
                 Console.WriteLine(nullEx.Message);
             }
         }
-        public static Maze LoadMaze()
-        {
+        public static Maze LoadMaze() {
             try
             {
                 string? fileName = OpenDialog();
+                return LoadMaze(fileName);
+            }
+            catch (NullReferenceException nullEx)
+            {
+                Console.WriteLine(nullEx.Message);
+                return null;
+            }
+        }
+        public static Maze LoadMaze(string fileName)
+        {
+            try
+            {
                 Maze targetMaze;
                 using (var reader = new StreamReader(File.OpenRead(fileName)))
                 {
@@ -98,9 +110,9 @@ namespace Path_Finder.MazeDomain
                     return targetMaze;
                 }
             }
-            catch (NullReferenceException nullEx)
+            catch (Exception Ex)
             {
-                Console.WriteLine(nullEx.Message);
+                Console.WriteLine(Ex.Message);
                 return null;
             }
         }
