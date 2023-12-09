@@ -11,8 +11,7 @@ namespace Path_Finder
 
     public partial class Program
     {
-        private readonly System.Timers.Timer _pathTimer;
-
+        private static readonly Stopwatch _stopwatch = new Stopwatch();
         [STAThread]
         public static void Main(string[] args)
         {
@@ -59,31 +58,26 @@ namespace Path_Finder
                         }
                         else
                         {
+                            _stopwatch.Reset();
+                            _stopwatch.Start();
                             var rbfs = new RBFS(mazeForSolving);
                             progress = rbfs.GetPathTick();
                             options.RBFS = false;
+                            Console.WriteLine($"Elapsed time {_stopwatch.Elapsed.TotalSeconds}");
                         }
 
-                        if (progress is not null)
+                        if (progress.Path != null)
                         {
-                            if (progress.Path != null)
+                            Console.WriteLine("Solution was found\nPath:[");
+                            foreach (var coord in progress.Path)
                             {
-                                Console.WriteLine("Solution was found\nPath:[");
-                                foreach (var coord in progress.Path)
-                                {
-                                    Console.Write(coord.ToString() + ",");
-                                }
-                            }
-                            else
-                            {
-                                throw new ArgumentNullException("Solution was found, but path is null");
+                                Console.Write(coord.ToString() + ",");
                             }
                         }
                         else
                         {
                             Console.WriteLine("Solution was`nt found");
                         }
-                        progress = null;
                     }
                 });
         }
